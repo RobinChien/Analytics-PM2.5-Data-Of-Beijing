@@ -11,8 +11,8 @@ class Preprocessing():
         df = df.dropna().reset_index(drop=True)
         return df
 
-    def splitData(self, scaled_features, data):
-        df = pd.concat([data[['year', 'month', 'day', 'hour', 'season', 'PM_US Post']], scaled_features], axis=1)
+    def splitData(self, data, scaled_features):
+        df = pd.concat([data[['year', 'month', 'day', 'hour', 'season', 'PM_US Post']], scaled_features[['DEWP', 'HUMI', 'PRES', 'TEMP']]], axis=1)
         X_train, X_test, y_train, y_test = train_test_split(df.drop(['PM_US Post'] , axis=1), df['PM_US Post'], test_size=0.30, random_state=42)
         return X_train, X_test, y_train, y_test
 
