@@ -1,8 +1,5 @@
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import f1_score,confusion_matrix
-from sklearn.model_selection import RandomizedSearchCV
-from scipy.stats import randint as sp_randint
-from scipy.stats import uniform as sp_uniform
 
 import lightgbm as lgb
 import pandas as pd
@@ -11,12 +8,14 @@ import Preprocessing
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data = Preprocessing.Preprocessing().importData()
+data = Preprocessing.Preprocessing().importLevelData()
 scaled_data = Preprocessing.Preprocessing().normalizeData(data)
-X_train, X_test, y_train, y_test = Preprocessing.Preprocessing().splitData(data, scaled_data)
+X_train, X_test, y_train, y_test = Preprocessing.Preprocessing().splitLevelData(data, scaled_data)
 
-lgb_train = lgb.Dataset(data=X_train[['DEWP', 'HUMI', 'PRES', 'TEMP']],label=y_train)
-lgb_eval = lgb.Dataset(data=X_test[['DEWP', 'HUMI', 'PRES', 'TEMP']],label=y_test)
+X_train = X_train.drop(['year', 'month', 'day', 'hour', 'PM_US Post'], axis=1)
+X_test = X_test.drop(['year', 'month', 'day', 'hour', 'PM_US Post'], axis=1)
+lgb_train = lgb.Dataset(X_train, y_train)
+lgb_eval = lgb.Dataset(X_test, y_test, reference=lgb_train)
 
 params = {
     'task': 'train',
@@ -35,14 +34,7 @@ params = {
 
 evals_result = {}
 
-gbm = lgb.train(params, lgb_train, num_boost_round=20, valid_sets=lgb_eval, evals_result=evals_result, early_stopping_rounds=9)
+gbm = lgb.train(params, lgb_train, num_boost_round=20, valid_sets=lgb_eval, early_stopping_rounds=9)
 y_pred = gbm.predict(X_test, num_iteration=gbm.best_iteration)
+print("y_pred:", y_pred)
 print('The rmse of prediction is:', mean_squared_error(y_test, y_pred) ** 0.5)
-
-print('Plotting metrics recorded during training...')
-ax = lgb.plot_metric(evals_result, metric='auc')
-plt.show()
-
-print('Plotting feature importances...')
-ax = lgb.plot_importance(gbm, max_num_features=10)
-plt.show()

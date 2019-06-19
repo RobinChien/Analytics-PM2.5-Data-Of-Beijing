@@ -8,52 +8,52 @@ import Preprocessing
 split_line = "-"*25
 
 # Import data
-# data = Preprocessing.Preprocessing().importData()
+data = Preprocessing.Preprocessing().importData()
 
 # Show data columns
-# print("Data columns:\n", data.columns)
-# print(split_line)
+print("Data columns:\n", data.columns)
+print(split_line)
 
 # Show data info
-# print("Data info:\n", data.info())
-# print(split_line)
+print("Data info:\n", data.info())
+print(split_line)
 
 # Show data describtion
-# print("Data describtion:\n", data.describe())
-# print(split_line)
+print("Data describtion:\n", data.describe())
+print(split_line)
 
 # PM 2.5 常態分配
-# plt.title("PM2.5 Normal Distribution")
-# sns.distplot(data[['PM_US Post']])
-# plt.show()
+plt.title("PM2.5 Normal Distribution")
+sns.distplot(data[['PM_US Post']])
+plt.show()
 
 # PM 2.5 曲線（依日期）
-# plt.figure(figsize=(125,10))
-# plt.title("PM2.5 line plot of date")
-# datetime_data = Preprocessing.Preprocessing().importData()
-# datetime_data['datetime'] = pd.to_datetime(datetime_data[['year', 'month', 'day']])
-# datetime_data.set_index(datetime_data['datetime'] , inplace=True)
-# datetime_data = datetime_data.drop(['year', 'month', 'day', 'hour', 'season', 'DEWP', 'HUMI', 'PRES', 'TEMP', 'datetime'] , axis=1)
-# sns.lineplot(data=datetime_data)
-# plt.show()
+plt.figure(figsize=(125,10))
+plt.title("PM2.5 line plot of date")
+datetime_data = Preprocessing.Preprocessing().importData()
+datetime_data['datetime'] = pd.to_datetime(datetime_data[['year', 'month', 'day']])
+datetime_data.set_index(datetime_data['datetime'] , inplace=True)
+datetime_data = datetime_data.drop(['year', 'month', 'day', 'hour', 'season', 'DEWP', 'HUMI', 'PRES', 'TEMP', 'datetime'] , axis=1)
+sns.lineplot(data=datetime_data)
+plt.show()
 
 # PM 2.5 圓餅圖（依年份）
-# plt.figure(figsize=(125,10))
-# plt.title("PM2.5 box plot of year")
-# sns.boxplot(x="year", y="PM_US Post", data=data)
-# plt.show()
+plt.figure(figsize=(125,10))
+plt.title("PM2.5 box plot of year")
+sns.boxplot(x="year", y="PM_US Post", data=data)
+plt.show()
 
 # PM 2.5 圓餅圖（依月份）
-# plt.figure(figsize=(125,10))
-# plt.title("PM2.5 box plot of month")
-# sns.boxplot(x="month", y="PM_US Post", data=data)
-# plt.show()
+plt.figure(figsize=(125,10))
+plt.title("PM2.5 box plot of month")
+sns.boxplot(x="month", y="PM_US Post", data=data)
+plt.show()
 
 # PM 2.5 圓餅圖（依季節）
-# plt.figure(figsize=(125,10))
-# plt.title("PM2.5 box plot of season")
-# sns.boxplot(x="season", y="PM_US Post", data=data)
-# plt.show()
+plt.figure(figsize=(125,10))
+plt.title("PM2.5 box plot of season")
+sns.boxplot(x="season", y="PM_US Post", data=data)
+plt.show()
 
 # PM 2.5 等級長條圖（依季節）
 plt.figure(figsize=(125,10))

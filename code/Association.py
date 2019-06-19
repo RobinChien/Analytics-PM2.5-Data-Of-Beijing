@@ -9,10 +9,12 @@ import os
 import Preprocessing
 
 # Import data
-data = Preprocessing.Preprocessing().importData()
+data = Preprocessing.Preprocessing().importLevelData()
+scaled_data = Preprocessing.Preprocessing().normalizeData(data)
+df = pd.concat([data[['season','level']], scaled_data[['DEWP', 'HUMI', 'PRES', 'TEMP']]], axis=1)
 
 # 熱力圖
-corr_matrix = data[['DEWP', 'HUMI', 'PRES', 'TEMP', 'PM_US Post']].corr()
+corr_matrix = df[['season','DEWP', 'HUMI', 'PRES', 'TEMP', 'level']].corr('spearman')
 heatmap = sns.heatmap(
     corr_matrix,
     cbar=True,
@@ -20,8 +22,8 @@ heatmap = sns.heatmap(
     square=True,
     fmt='.2f',
     annot_kws={'size': 15},
-    yticklabels=['DEWP', 'HUMI', 'PRES', 'TEMP', 'PM_US Post'],
-    xticklabels=['DEWP', 'HUMI', 'PRES', 'TEMP', 'PM_US Post'],
+    yticklabels=['season','DEWP', 'HUMI', 'PRES', 'TEMP', 'level'],
+    xticklabels=['season','DEWP', 'HUMI', 'PRES', 'TEMP', 'level'],
     cmap='Dark2'
     )
 plt.show()

@@ -13,7 +13,7 @@ class Preprocessing():
         return df
 
     def splitData(self, data, scaled_features):
-        df = pd.concat([data[['year', 'month', 'day', 'hour', 'season', 'PM_US Post']], scaled_features[['DEWP', 'HUMI', 'PRES', 'TEMP']]], axis=1)
+        df = pd.concat([data[['year', 'month', 'day', 'hour', 'season', 'PM_US Post']], scaled_features[['DEWP', 'PRES', 'TEMP']]], axis=1)
         X_train, X_test, y_train, y_test = train_test_split(df.drop(['PM_US Post'] , axis=1), df['PM_US Post'], test_size=0.30, random_state=42)
         return X_train, X_test, y_train, y_test
 
@@ -41,8 +41,8 @@ class Preprocessing():
             (df['PM_US Post'] > 201) & (df['PM_US Post']<= 300),
             (df['PM_US Post'] > 300)
             ]
-        choices = [1, 2, 3, 4, 5, 6]
-        df['level'] = np.select(conditions, choices, default=1)
+        choices = [0,1,2,3,4,5]
+        df['level'] = np.select(conditions, choices, default=0)
         return df
 
     #####
